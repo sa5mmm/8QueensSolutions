@@ -1,0 +1,5 @@
+﻿  QueensMain.cpp
+c:\users\sam m\documents\visual studio 2017\projects\8queenssolutions\8queenssolutions\queensmain.cpp(7): warning C4309: 'initializing': truncation of constant value
+c:\users\sam m\documents\visual studio 2017\projects\8queenssolutions\8queenssolutions\queensmain.cpp(8): warning C4309: 'initializing': truncation of constant value
+  8QueensSolutions.vcxproj -> C:\Users\Sam M\documents\visual studio 2017\Projects\8QueensSolutions\Debug\8QueensSolutions.exe
+  8QueensSolutions.vcxproj -> C:\Users\Sam M\documents\visual studio 2017\Projects\8QueensSolutions\Debug\8QueensSolutions.pdb (Partial PDB)
