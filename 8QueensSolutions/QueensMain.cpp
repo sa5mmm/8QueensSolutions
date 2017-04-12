@@ -7,11 +7,15 @@ const int MaxROW = 8;
 const int MaxCOL = 8;
 const char BLANK = 254;
 const char QUEEN = 234;
+bool trekForward = true;
+
 void resetPlacedArray();
 void resetConflictsArray();
 void readPlacedArray();
 void readConflictsArray();
 
+
+void placeQueens(int rowPar, int colPar);
 
 int conflictsArray[MaxROW][MaxCOL];
 char placedArray[MaxROW][MaxCOL];
@@ -52,22 +56,74 @@ int main()
 	PlaceQueenFill(initialQueenRow, initialQueenCol);
 
 	readConflictsArray();
-	cout << endl;
+
+
+	//place next queens Test loop
+	int curCol = 1;
+	int curRow = 0;
+	/*while (conflictsArray[curRow][curCol] == 1)
+	{
+		curRow++;
+	}
+	if (conflictsArray[curRow][curCol] == 0)
+	{
+		PlaceQueenFill(curRow, curCol);
+	}
+
+	readConflictsArray();
+	cout << endl;*/
+
+	placeQueens(curRow, curCol);
+
+	readConflictsArray();
 	readPlacedArray();
-	cout << endl;
-
-
-	//place next queens
-
-
-
-	int col;
-	int row;
-
 
 
 	system("pause");
 	return 0;
+}
+
+void placeQueens(int rowPar, int colPar)
+{
+	int row = 0;
+	while (trekForward)
+	{
+		if (conflictsArray[row][colPar] == 0)//we found an open spot to put a queen.
+		{
+			PlaceQueenFill(row, colPar);
+			placeQueens(row, colPar + 1);
+		}
+		else
+		{
+			row++;
+			if (row > 7)//We have reached the end of the row and no open spaces!
+				//We must backtrack!
+			{
+				trekForward = false;
+			}
+		}
+	}
+}
+void removeQueens(int colPar)
+{
+	bool isOnly = false;//If it was the only place we could place it then we need to remove a queen from another col.
+	int options = 0;
+	for (int row = 0; row < 8; row++)//First we are going to find the last placed queen and remove it.
+	{
+		if (placedArray[row][colPar] == QUEEN)
+		{
+			RemoveQueenSub(row, colPar);
+			for (int i = 0; i < 8; i++)
+			{
+				if (conflictsArray[row][colPar]==0)//We need to find more than one placement option
+				{
+					options++;
+				}
+
+			}
+		}
+	}
+
 }
 
 
@@ -101,6 +157,8 @@ void readConflictsArray()
 		}
 		cout << endl;
 	}
+	cout << endl;
+	cout << endl;
 }
 void readPlacedArray()
 {
@@ -112,17 +170,15 @@ void readPlacedArray()
 		}
 		cout << endl;
 	}
+	cout << endl;
+	cout << endl;
 }
-
-
-
-
 
 /***********************Functions to Fill Diagonals**************************************/
 void PlaceQueenFill(int rowPar, int colPar)
 {
 	//Placement Array
-	placedArray[rowPar][colPar]=QUEEN;
+	placedArray[rowPar][colPar] = QUEEN;
 
 	//Conflicts Array
 	NWDiagonalLeftFill(rowPar, colPar);
@@ -132,7 +188,7 @@ void PlaceQueenFill(int rowPar, int colPar)
 	fillCol(rowPar, colPar);
 	fillRow(rowPar, colPar);
 	//The spot where the queen went has a value of 4 at the end of this so let's subtract 3 from the position;
-	conflictsArray[rowPar][colPar]-=5;
+	conflictsArray[rowPar][colPar] -= 5;
 }
 //Goes NW towards the left and fills in.
 void NWDiagonalLeftFill(int rowPar, int colPar)
@@ -188,8 +244,6 @@ void NEDiagonalRightFill(int rowPar, int colPar)
 		conflictsArray[rowPar][colPar]++;
 	}
 }
-
-
 
 /***********************Functions to Subtract Diagonals**************************************/
 void RemoveQueenSub(int rowPar, int colPar)
@@ -260,8 +314,6 @@ void NEDiagonalRightSub(int rowPar, int colPar)
 		conflictsArray[rowPar][colPar]--;
 	}
 }
-
-
 
 void subCol(int rowPar, int colPar)
 {
