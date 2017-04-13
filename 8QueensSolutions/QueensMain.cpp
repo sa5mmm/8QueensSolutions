@@ -85,18 +85,17 @@ int main()
 
 void placeQueens(int rowPar, int colPar)
 {
-	int row = 0;
 	while (trekForward)
 	{
-		if (conflictsArray[row][colPar] == 0)//we found an open spot to put a queen.
+		if (conflictsArray[rowPar][colPar] == 0)//we found an open spot to put a queen.
 		{
-			PlaceQueenFill(row, colPar);
-			placeQueens(row, colPar + 1);
+			PlaceQueenFill(rowPar, colPar);
+			placeQueens(rowPar, colPar + 1);
 		}
 		else
 		{
-			row++;
-			if (row > 7)//We have reached the end of the row and no open spaces!
+			rowPar++;
+			if (rowPar > 7)//We have reached the end of the row and no open spaces!
 				//We must backtrack!
 			{
 				trekForward = false;
@@ -120,6 +119,29 @@ void removeQueens(int colPar)
 					options++;
 				}
 
+			}
+			if (options == 1)//if there was only one option in the col then we need to go backwards a column to remove a queen
+			{
+				removeQueens(colPar - 1);
+			}
+			else//there were multiple options to place a queen. lets place a queen
+			{
+				//Lets find the open spots.
+				for (int j = 0; j < 7; j++)
+				{
+					//find the second placement
+					int open = 0;
+					if (conflictsArray[j][colPar] == 0)
+					{
+						open++;
+					}
+					else if (open == 2)
+					{
+						trekForward = true;
+						placeQueens(row, colPar);
+					}
+				}
+				
 			}
 		}
 	}
